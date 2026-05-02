@@ -1,0 +1,14 @@
+# variables de entorno o secretos
+.env
+
+# node
+node_modules
+npm-debug.log
+
+# control de versiones
+.git
+.gitignore
+
+# build o compilaciones (react)
+dist/
+build/
