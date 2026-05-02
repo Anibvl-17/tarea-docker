@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend para tarea-docker",
+  "keywords": [
+    "backend",
+    "docker",
+    "node"
+  ],
+  "homepage": "https://github.com/Anibvl-17/tarea-docker#readme",
+  "bugs": {
+    "url": "https://github.com/Anibvl-17/tarea-docker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anibvl-17/tarea-docker.git"
+  },
+  "license": "ISC",
+  "author": "Claudio Candia",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
