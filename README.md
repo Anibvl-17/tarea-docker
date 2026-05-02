@@ -1,9 +1,41 @@
 # tarea-docker
+
 Tarea del ramo Taller de Desarrollo, donde se utiliza Docker según arquitectura definida para la tesis.
 
 ## Arquitectura Definida
+
 Inicialmente, se propone la siguiente arquitectura:
 
-- **Backend**: Node.js, Express
+- **Backend**: Node.js 24, Express
 - **Frontend**: React
-- **Base de datos**: PostgreSQL
+- **Base de datos**: PostgreSQL 18
+
+## Ejecutar docker compose
+
+Para iniciar el contenedor, utiliza el comando:
+
+```bash
+docker compose up
+```
+
+## Variables de entorno
+
+Para utilizar tanto backend, frontend y la base de datos, se debe utilizar las siguientes variables de entorno:
+
+```sh
+# Postgres
+POSTGRES_USER = (usuario postgres)
+POSTGRES_PASSWORD = (clave postgres)
+POSTGRES_DB = (base de datos)
+
+# Backend
+DB_HOST = db
+DB_PORT = (puerto base de datos)
+DB_USER = (usuario postgres)
+DB_PASSWORD = (clave postgres)
+DB_NAME = (base de datos)
+PORT = (puerto)
+
+# Frontend
+VITE_API_URL = (url api)
+```
