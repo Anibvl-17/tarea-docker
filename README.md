@@ -35,6 +35,8 @@ DB_USER = (usuario postgres)
 DB_PASSWORD = (clave postgres)
 DB_NAME = (base de datos)
 PORT = (puerto)
+JWT_SECRET = (JWT secret)
+COOKIE_KEY = (cookie key)
 
 # Frontend
 VITE_API_URL = (url api)
