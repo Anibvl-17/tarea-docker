@@ -1,60 +1,84 @@
+version: "3.8"
+
 services:
   # Frontend
   frontend:
-    build: ./frontend
-    develop:
-      watch:
-        - action: sync # sincroniza cambios sin reconstruir
-          path: ./frontend/src
-          target: /app/src
-          initial_sync: true
-          ignore:
-            - node_modules/
-        - action: sync # actualiza index.html
-          path: ./frontend/index.html
-          target: /app/index.html
-          initial_sync: true
-        - action: rebuild # al actualizar dependencias se debe reconstruir
-          path: ./frontend/package.json
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
     container_name: app-container
-    env_file:
-      - .env
+    restart: unless-stopped
     ports:
-      - 5173:5173
+      - 5173:80 # nginx usa el puerto 80
     depends_on: # Inicia backend primero, luego frontend
-      - backend
+      backend:
+        condition: service_healthy
+    networks:
+      - frontend_network
 
   # Backend
   backend:
-    build: ./backend
-    develop:
-      watch:
-        - action: sync # carpeta src
-          path: ./backend/src
-          target: /app/src
-          initial_sync: true
-          ignore:
-            - node_modules/
-        - action: rebuild # para actualizar dependencias
-          path: ./backend/package.json
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+      args:
+        - NODE_ENV=${NODE_ENV}
     container_name: api-container
-    env_file:
-      - .env
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-user}
+      DB_PASSWORD: ${DB_PASSWORD:-pass}
+      DB_NAME: ${DB_NAME:-test}
+      PORT: ${PORT:-3000}
+      JWT_SECRET: ${JWT_SECRET:-super_secret}
+      COOKIE_KEY: ${COOKIE_KEY:-cookie_key}
     ports:
       - 3000:3000
-    depends_on: # Inicia primero la base de datos, luego el backend
-      - db
+    networks:
+      - backend_network
+      - frontend_network
+    depends_on: # Inicia primero la base de datos y se asegura que esté funcionando
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:${PORT}/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Base de datos (PostgreSQL)
   db:
     image: postgres:18-alpine
     container_name: db-container
-    env_file:
-      - .env
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+      POSTGRES_DB: ${POSTGRES_DB:-test}
     ports:
       - 5433:5432
+    networks:
+      - backend_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - data:/var/lib/postgresql
+
+# Las redes aislan los servicios, en este caso, frontend no accede a BD
+networks:
+  backend_network:
+    driver: bridge
+  frontend_network:
+    driver: bridge
 
 volumes:
   data:
