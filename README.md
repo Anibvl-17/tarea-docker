@@ -10,7 +10,7 @@ Inicialmente, se propone la siguiente arquitectura:
 - **Frontend**: React
 - **Base de datos**: PostgreSQL 18
 
-## Ejecutar docker compose
+## Iniciar y acceder a la aplicación
 
 Para iniciar la aplicación, asegúrate de encontrarte en la carpeta raíz del proyecto
 (donde esta ubicado [docker-compose.yml](docker-compose.yml)) y utiliza el comando:
@@ -18,6 +18,12 @@ Para iniciar la aplicación, asegúrate de encontrarte en la carpeta raíz del p
 ```bash
 docker compose up
 ```
+
+Para acceder a la aplicación y verificar que esté funcionando, dirígete a las siguientes 
+direcciones:
+
+- http://localhost:5173/ -> Aquí se ve la plantilla de frontend
+- http://localhost:3000/ -> Aquí se ve el mensaje "¡API funcionando!"
 
 ## Variables de entorno
 
