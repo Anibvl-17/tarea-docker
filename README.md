@@ -12,7 +12,8 @@ Inicialmente, se propone la siguiente arquitectura:
 
 ## Ejecutar docker compose
 
-Para iniciar el contenedor, utiliza el comando:
+Para iniciar la aplicación, asegúrate de encontrarte en la carpeta raíz del proyecto
+(donde esta ubicado [docker-compose.yml](docker-compose.yml)) y utiliza el comando:
 
 ```bash
 docker compose up
@@ -20,24 +21,6 @@ docker compose up
 
 ## Variables de entorno
 
-Para utilizar tanto backend, frontend y la base de datos, se debe utilizar las siguientes variables de entorno:
-
-```sh
-# Postgres
-POSTGRES_USER = (usuario postgres)
-POSTGRES_PASSWORD = (clave postgres)
-POSTGRES_DB = (base de datos)
-
-# Backend
-DB_HOST = db
-DB_PORT = (puerto base de datos)
-DB_USER = (usuario postgres)
-DB_PASSWORD = (clave postgres)
-DB_NAME = (base de datos)
-PORT = (puerto)
-JWT_SECRET = (JWT secret)
-COOKIE_KEY = (cookie key)
-
-# Frontend
-VITE_API_URL = (url api)
-```
+En el archivo [docker-compose.yml](docker-compose.yml) se incluyen variables de entorno 
+por defecto. Para utilizar otras variables de entorno, utiliza el archivo [.env.example](.env.example) 
+el cual sirve de plantilla para configurar las variables. Recuerda eliminar la parte _.example_!
